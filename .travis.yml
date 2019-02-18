@@ -19,6 +19,10 @@ notifications:
 services:
 - rabbitmq
 
+before_install:
+- npm i enqueuer --no-save
+
 script:
 - npm run lint
 - npm run build
+- nqr -a examples/amqp.yml -l enqueuer-plugin-amqp
