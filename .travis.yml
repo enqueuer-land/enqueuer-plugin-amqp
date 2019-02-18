@@ -20,7 +20,7 @@ services:
 - rabbitmq
 
 before_install:
-- npm i enqueuer --no-save
+- npm i enqueuer
 
 script:
 - npm run lint
