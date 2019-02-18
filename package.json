@@ -28,7 +28,7 @@
   "homepage": "https://github.com/lopidio/enqueuer-plugin-amqp#readme",
   "devDependencies": {
     "@types/node": "^10.11.5",
-    "enqueuer-plugins-template": "^1.0.1",
+    "enqueuer": "^4.2.0",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
     "typescript": "^3.0.1"
