@@ -19,9 +19,6 @@ notifications:
 services:
 - rabbitmq
 
-before_install:
-- npm i enqueuer
-
 script:
 - npm run lint
 - npm run build

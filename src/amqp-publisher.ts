@@ -1,9 +1,9 @@
 import * as amqp from 'amqp';
-import {PublisherModel} from 'enqueuer-plugins-template/publisher-model';
-import {Publisher} from 'enqueuer-plugins-template/publisher';
-import {Logger} from 'enqueuer-plugins-template/logger';
-import {MainInstance} from 'enqueuer-plugins-template/main-instance';
-import {PublisherProtocol} from 'enqueuer-plugins-template/publisher-protocol';
+import {Publisher} from 'enqueuer/js/publishers/publisher';
+import {PublisherModel} from 'enqueuer/js/models/inputs/publisher-model';
+import {Logger} from 'enqueuer/js/loggers/logger';
+import {MainInstance} from 'enqueuer/js/plugins/main-instance';
+import {PublisherProtocol} from 'enqueuer/js/protocols/publisher-protocol';
 
 export class AmqpPublisher extends Publisher {
     private connection: any;
