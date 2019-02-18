@@ -1,0 +1,39 @@
+{
+  "name": "enqueuer-plugin-amqp",
+  "version": "0.0.1",
+  "description": "Enqueuer amqp plugin",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "all": "npm run lint && rm -rf dist && npm run build",
+    "lint": "node_modules/.bin/tslint --project tsconfig.json",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lopidio/enqueuer-plugin-amqp.git"
+  },
+  "keywords": [
+    "enqueuer",
+    "nqr",
+    "amqp",
+    "plugin"
+  ],
+  "author": "Virgs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lopidio/enqueuer-plugin-amqp/issues"
+  },
+  "homepage": "https://github.com/lopidio/enqueuer-plugin-amqp#readme",
+  "devDependencies": {
+    "@types/node": "^10.11.5",
+    "enqueuer-plugins-template": "^1.0.0",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "@types/amqp": "^0.2.4",
+    "amqp": "^0.2.7"
+  }
+}

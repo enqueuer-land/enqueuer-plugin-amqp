@@ -1,1 +1,0 @@
-# enqueuer-plugin-amqp

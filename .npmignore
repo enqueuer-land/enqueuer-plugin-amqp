@@ -1,0 +1,6 @@
+tsconfig.json
+src
+.gitignore
+example.ts
+tslint.json
+coverage
