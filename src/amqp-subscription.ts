@@ -1,9 +1,5 @@
 import * as amqp from 'amqp';
-import {Subscription} from 'enqueuer/js/subscriptions/subscription';
-import {SubscriptionModel} from 'enqueuer/js/models/inputs/subscription-model';
-import {Logger} from 'enqueuer/js/loggers/logger';
-import {MainInstance} from 'enqueuer/js/plugins/main-instance';
-import {SubscriptionProtocol} from 'enqueuer/js/protocols/subscription-protocol';
+import {Logger, MainInstance, Subscription, SubscriptionModel, SubscriptionProtocol} from 'enqueuer-plugins-template';
 
 export class AmqpSubscription extends Subscription {
 

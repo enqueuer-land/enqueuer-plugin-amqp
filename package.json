@@ -35,6 +35,6 @@
   "dependencies": {
     "@types/amqp": "^0.2.4",
     "amqp": "^0.2.7",
-    "enqueuer": "^4.2.1"
+    "enqueuer-plugins-template": "^1.0.4"
   }
 }

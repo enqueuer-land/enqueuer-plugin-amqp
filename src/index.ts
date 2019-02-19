@@ -1,6 +1,6 @@
 import * as subscription from './amqp-subscription';
 import * as publisher from './amqp-publisher';
-import {MainInstance} from 'enqueuer/js/plugins/main-instance';
+import {MainInstance} from 'enqueuer-plugins-template';
 
 export function entryPoint(mainInstance: MainInstance): void {
     subscription.entryPoint(mainInstance);
