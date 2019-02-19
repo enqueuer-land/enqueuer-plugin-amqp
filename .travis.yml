@@ -22,4 +22,5 @@ services:
 script:
 - npm run lint
 - npm run build
-- cd examples && ../node_modules/.bin/nqr -a amqp.yml -l enqueuer-plugin-amqp
+- npm link
+- nqr -a examples/amqp.yml -l enqueuer-plugin-amqp
