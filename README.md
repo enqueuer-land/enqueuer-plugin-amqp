@@ -3,4 +3,5 @@
 
 Enqueuer plugin to enable amqp protocol
 #### Usage
-```$ nqr -a examples/amqp.yml -l enqueuer-plugin-amqp```
+    $ npm install enqueuer enqueuer-plugin-amqp
+    $ nqr -a <testing-file> -l enqueuer-plugin-amqp
