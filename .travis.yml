@@ -20,6 +20,7 @@ services:
 - rabbitmq
 
 script:
+- npm install
 - npm run lint
 - npm run build
 - npm link
