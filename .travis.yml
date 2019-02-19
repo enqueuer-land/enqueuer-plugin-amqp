@@ -20,7 +20,8 @@ services:
 - rabbitmq
 
 script:
+- npm install
 - npm run lint
 - npm run build
 - npm link
-- nqr -a examples/amqp.yml -l enqueuer-plugin-amqp
+- nqr -a examples/amqp.yml -l enqueuer-plugin-amqp/enqueuer-plugin-amqp
