@@ -24,4 +24,4 @@ script:
 - npm run lint
 - npm run build
 - npm link
-- nqr -a examples/amqp.yml -l /home/travis/build/lopidio/enqueuer-plugin-amqp
+- nqr -a examples/amqp.yml -l `pwd`
