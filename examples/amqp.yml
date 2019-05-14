@@ -62,7 +62,6 @@
         routingKey: enqueuer.default.exchange
     subscriptions:
     -   type: amqp
-        module: protocols/subscriptions/amqp.js
         timeout: 3000
         options:
             host: localhost
