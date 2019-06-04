@@ -1,0 +1,48 @@
+timeout: -1
+requisitions:
+    -   name: creating exchange
+        publishers:
+            -   type: amqp
+                routingKey: routingKey.non.durable
+                exchange: exchange.non.durable
+                exchangeOptions:
+                    passive: false
+                payload: first
+    -   name: creating non durable queue (not passive)
+        publishers:
+            -   type: amqp
+                routingKey: routingKey.non.durable
+                exchange: exchange.non.durable
+                payload: second
+        subscriptions:
+            -   type: amqp
+                queueName: queue.non.durable
+                exchange: exchange.non.durable
+                routingKey: routingKey.non.durable
+                queueOptions:
+                    passive: false
+                    durable: true
+                    autoDelete: false
+                onMessageReceived:
+                    assertions:
+                        -   expect: Buffer.from(payload.data).toString();
+                            toBeEqualTo: `second`
+    -   name: reusing non durable queue (passive)
+        publishers:
+            -   type: amqp
+                routingKey: routingKey.non.durable
+                exchange: exchange.non.durable
+                payload: third
+        subscriptions:
+            -   type: amqp
+                queueName: queue.non.durable
+                exchange: exchange.non.durable
+                routingKey: routingKey.non.durable
+                queueOptions:
+                    passive: true
+                    durable: true
+                    autoDelete: true
+                onMessageReceived:
+                    assertions:
+                        -   expect: Buffer.from(payload.data).toString();
+                            toBeEqualTo: `third`

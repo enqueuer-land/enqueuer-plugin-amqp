@@ -11,8 +11,6 @@ cache:
 
 notifications:
     email:
-        recipients:
-        - guilherme.moraes@outlook.com
         on_success: never
         on_failure: always
 
@@ -24,4 +22,4 @@ script:
 - npm run lint
 - npm run build
 - npm link
-- nqr -a examples/amqp.yml -l `pwd`
+- nqr -a examples/amqp.yml -a examples/queueOptions.yml -l `pwd`

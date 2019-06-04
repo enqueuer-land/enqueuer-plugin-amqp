@@ -1,13 +1,13 @@
 import * as amqp from 'amqp';
-import {Publisher, PublisherModel, Logger, MainInstance, PublisherProtocol} from 'enqueuer-plugins-template';
+import {Publisher, InputPublisherModel, Logger, MainInstance, PublisherProtocol} from 'enqueuer';
 
 export class AmqpPublisher extends Publisher {
     private connection: any;
 
-    constructor(publisher: PublisherModel) {
+    constructor(publisher: InputPublisherModel) {
         super(publisher);
-        this.messageOptions = publisher.messageOptions || {};
-        this.exchangeOptions = publisher.exchangeOptions || {};
+        this['messageOptions'] = publisher.messageOptions || {};
+        this['exchangeOptions'] = publisher.exchangeOptions || {};
         this.exchangeOptions.confirm = true;
         if (this.exchangeOptions.passive === undefined) {
             this.exchangeOptions.passive = true;
@@ -51,7 +51,7 @@ export class AmqpPublisher extends Publisher {
 
 export function entryPoint(mainInstance: MainInstance): void {
     const amqp = new PublisherProtocol('amqp',
-        (publisherModel: PublisherModel) => new AmqpPublisher(publisherModel))
+        (publisherModel: InputPublisherModel) => new AmqpPublisher(publisherModel))
         .addAlternativeName('amqp-0.9')
         .setLibrary('amqp') as PublisherProtocol;
     mainInstance.protocolManager.addProtocol(amqp);

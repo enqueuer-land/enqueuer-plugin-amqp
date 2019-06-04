@@ -1,5 +1,5 @@
 import * as amqp from 'amqp';
-import {Logger, MainInstance, Subscription, SubscriptionModel, SubscriptionProtocol} from 'enqueuer-plugins-template';
+import {Subscription, InputSubscriptionModel, Logger, MainInstance, SubscriptionProtocol} from 'enqueuer';
 
 export class AmqpSubscription extends Subscription {
 
@@ -7,8 +7,9 @@ export class AmqpSubscription extends Subscription {
     private connection: any;
     private messageReceiverPromiseResolver?: (value?: (PromiseLike<any> | any)) => void;
 
-    constructor(subscriptionAttributes: SubscriptionModel) {
+    constructor(subscriptionAttributes: InputSubscriptionModel) {
         super(subscriptionAttributes);
+        this['queueOptions'] = this.queueOptions || {};
         this.queueName = subscriptionAttributes.queueName || AmqpSubscription.createQueueName();
     }
 
@@ -49,7 +50,7 @@ export class AmqpSubscription extends Subscription {
     }
 
     private connectionReady(resolve: any, reject: any) {
-        this.connection.queue(this.queueName, (queue: any) => {
+        this.connection.queue(this.queueName, this.queueOptions, (queue: any) => {
             queue.subscribe((message: any, headers: any, deliveryInfo: any) => this.gotMessage(message, headers, deliveryInfo));
             if (this.exchange && this.routingKey) {
                 this.bind(queue, resolve);
@@ -75,7 +76,7 @@ export class AmqpSubscription extends Subscription {
             const result = {payload: message, headers: headers, deliveryInfo: deliveryInfo};
             this.messageReceiverPromiseResolver(result);
         } else {
-            Logger.warning(`Queue ${this.queueName} is not subscribed yet`);
+            Logger.warning(`Queue '${this.queueName}' is not subscribed yet`);
         }
     }
 
@@ -83,7 +84,7 @@ export class AmqpSubscription extends Subscription {
 
 export function entryPoint(mainInstance: MainInstance): void {
     const amqp = new SubscriptionProtocol('amqp',
-        (subscriptionModel: SubscriptionModel) => new AmqpSubscription(subscriptionModel),
+        (subscriptionModel: InputSubscriptionModel) => new AmqpSubscription(subscriptionModel),
         ['payload', 'headers', 'deliveryInfo'])
         .addAlternativeName('amqp-0.9')
         .setLibrary('amqp') as SubscriptionProtocol;

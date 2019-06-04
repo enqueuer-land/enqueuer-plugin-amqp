@@ -1,6 +1,6 @@
 {
   "name": "enqueuer-plugin-amqp",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "Enqueuer amqp plugin",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,11 +31,11 @@
     "@types/node": "^11.9.4",
     "ts-node": "^8.0.2",
     "tslint": "^5.11.0",
-    "typescript": "^3.0.1"
+    "typescript": "^3.5.1"
   },
   "dependencies": {
     "@types/amqp": "^0.2.4",
     "amqp": "^0.2.7",
-    "enqueuer-plugins-template": "^1.0.4"
+    "enqueuer": "^4.7.3"
   }
 }
