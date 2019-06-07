@@ -2,12 +2,17 @@ language: node_js
 
 sudo: required
 
+addons:
+    apt:
+        packages:
+            - rabbitmq-server
+
 node_js:
-- v10.8.0
+    - v10.8.0
 
 cache:
     directories:
-    - node_modules
+        - node_modules
 
 notifications:
     email:
@@ -15,11 +20,11 @@ notifications:
         on_failure: always
 
 services:
-- rabbitmq
+    - rabbitmq
 
 script:
-- npm install
-- npm run lint
-- npm run build
-- npm link
-- nqr -a examples/amqp.yml -a examples/queueOptions.yml -l `pwd`
+    - npm install
+    - npm run lint
+    - npm run build
+    - npm link
+    - nqr -a examples/amqp.yml -a examples/queueOptions.yml -l `pwd`
