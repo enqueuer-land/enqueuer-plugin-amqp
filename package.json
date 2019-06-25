@@ -1,6 +1,6 @@
 {
   "name": "enqueuer-plugin-amqp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Enqueuer amqp plugin",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
