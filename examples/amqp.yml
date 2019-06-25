@@ -68,7 +68,7 @@
             port: 5672
         queueName: enqueuer.default.exchange
         onMessageReceived:
-            script: data = Buffer.from(message.payload.data).toString();
+            script: data = Buffer.from(payload.data).toString();
             assertions:
             -   expect: data
                 toBeEqualTo: `default exchange`

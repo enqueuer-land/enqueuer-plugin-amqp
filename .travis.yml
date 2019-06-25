@@ -27,4 +27,4 @@ script:
     - npm run lint
     - npm run build
     - npm link
-    - nqr -a examples/amqp.yml -a examples/queueOptions.yml -l `pwd`
+    - nqr examples/amqp.yml examples/queueOptions.yml -l `pwd`

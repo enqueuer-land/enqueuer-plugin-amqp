@@ -44,6 +44,7 @@ export class AmqpPublisher extends Publisher {
                 return reject(err);
             }
             Logger.trace(`AMQP message published`);
+            this.executeHookEvent('onPublished');
             resolve();
         });
     }
@@ -51,7 +52,39 @@ export class AmqpPublisher extends Publisher {
 
 export function entryPoint(mainInstance: MainInstance): void {
     const amqp = new PublisherProtocol('amqp',
-        (publisherModel: InputPublisherModel) => new AmqpPublisher(publisherModel))
+        (publisherModel: InputPublisherModel) => new AmqpPublisher(publisherModel),
+        {
+            homepage: 'https://github.com/enqueuer-land/enqueuer-plugin-amqp',
+            libraryHomepage: 'https://github.com/postwait/node-amqp',
+            description: 'Publisher to handle AMQP 0.9 protocol',
+            schema: {
+                attributes: {
+                    options: {
+                        description: 'Connection options',
+                        type: 'object',
+                        required: false,
+                    },
+                    exchangeOptions: {
+                        type: 'object',
+                        required: false,
+                    },
+                    exchange: {
+                        description: 'Defaults to the default exchange when empty',
+                        type: 'string',
+                        required: false
+                    },
+                    routingKey: {
+                        type: 'string',
+                        required: true
+                    },
+                },
+                hooks: {
+                    onPublished: {
+                        arguments: {}
+                    }
+                }
+            }
+        })
         .addAlternativeName('amqp-0.9')
         .setLibrary('amqp') as PublisherProtocol;
     mainInstance.protocolManager.addProtocol(amqp);

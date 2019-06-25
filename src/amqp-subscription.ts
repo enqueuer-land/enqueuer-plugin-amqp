@@ -1,16 +1,18 @@
 import * as amqp from 'amqp';
-import {Subscription, InputSubscriptionModel, Logger, MainInstance, SubscriptionProtocol} from 'enqueuer';
+import {InputSubscriptionModel, Logger, MainInstance, Subscription, SubscriptionProtocol} from 'enqueuer';
 
 export class AmqpSubscription extends Subscription {
 
     private readonly queueName: string;
+    private readonly messageReceiverPromise: Promise<void>;
     private connection: any;
-    private messageReceiverPromiseResolver?: (value?: (PromiseLike<any> | any)) => void;
+    private messageReceiverResolver?: Function;
 
     constructor(subscriptionAttributes: InputSubscriptionModel) {
         super(subscriptionAttributes);
         this['queueOptions'] = this.queueOptions || {};
         this.queueName = subscriptionAttributes.queueName || AmqpSubscription.createQueueName();
+        this.messageReceiverPromise = new Promise((resolve) => this.messageReceiverResolver = resolve);
     }
 
     public static createQueueName(): string {
@@ -25,11 +27,9 @@ export class AmqpSubscription extends Subscription {
         return text;
     }
 
-    public receiveMessage(): Promise<any> {
-        return new Promise((resolve) => {
-            Logger.debug(`Amqp subscription registering receiveMessage resolver`);
-            this.messageReceiverPromiseResolver = resolve;
-        });
+    public receiveMessage(): Promise<void> {
+        Logger.debug(`Amqp subscription registering receiveMessage resolver`);
+        return this.messageReceiverPromise;
     }
 
     public subscribe(): Promise<void> {
@@ -72,12 +72,13 @@ export class AmqpSubscription extends Subscription {
     }
 
     private gotMessage(message: any, headers: any, deliveryInfo: any) {
-        if (this.messageReceiverPromiseResolver) {
+        // if (this.messageReceiverPromiseResolver) {
             const result = {payload: message, headers: headers, deliveryInfo: deliveryInfo};
-            this.messageReceiverPromiseResolver(result);
-        } else {
-            Logger.warning(`Queue '${this.queueName}' is not subscribed yet`);
-        }
+            this.executeHookEvent('onMessageReceived', result);
+            this.messageReceiverResolver!();
+        // } else {
+        //     Logger.warning(`Queue '${this.queueName}' is not subscribed yet`);
+        // }
     }
 
 }
@@ -85,7 +86,48 @@ export class AmqpSubscription extends Subscription {
 export function entryPoint(mainInstance: MainInstance): void {
     const amqp = new SubscriptionProtocol('amqp',
         (subscriptionModel: InputSubscriptionModel) => new AmqpSubscription(subscriptionModel),
-        ['payload', 'headers', 'deliveryInfo'])
+        {
+            homepage: 'https://github.com/enqueuer-land/enqueuer-plugin-amqp',
+            libraryHomepage: 'https://github.com/postwait/node-amqp',
+            description: 'Subscription to handle AMQP 0.9 protocol',
+            schema: {
+                attributes: {
+                    options: {
+                        description: 'Connection options',
+                        type: 'object',
+                        required: false,
+                    },
+                    queueOptions: {
+                        type: 'object',
+                        required: false,
+                    },
+                    queueName: {
+                        description: 'Randomly generated when empty',
+                        type: 'string',
+                        required: false
+                    },
+                    exchange: {
+                        description: 'Defaults to the default exchange when empty',
+                        type: 'string',
+                        required: false
+                    },
+                    routingKey: {
+                        description: 'Defaults to the queue name when empty',
+                        type: 'string',
+                        required: false
+                    },
+                },
+                hooks: {
+                    onMessageReceived: {
+                        arguments: {
+                            payload: {},
+                            headers: {},
+                            deliveryInfo: {},
+                        }
+                    }
+                }
+            }
+        })
         .addAlternativeName('amqp-0.9')
         .setLibrary('amqp') as SubscriptionProtocol;
     mainInstance.protocolManager.addProtocol(amqp);
