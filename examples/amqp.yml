@@ -52,7 +52,7 @@
             -   name: Routing Key
                 expect: deliveryInfo.routingKey
                 toBeEqualTo: `enqueuer.integration.test.routing.key`
--   name: default exhange
+-   name: default exchange
     publishers:
     -   type: amqp
         payload: default exchange
